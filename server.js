@@ -6,7 +6,10 @@ var config = require('./config'); //Contains Credentials
 var T = new Twit(config);
 
 var stream = T.stream('user'); //Using User Stream
+//Anytime Someone Follows me
 stream.on('follow', followed);
+
+stream.on('tweet', tweetEvent);
 
 function followed(event) {
 	var name = event.source.name;
@@ -14,7 +17,6 @@ function followed(event) {
 	tweetIt('Thanks for following me! ' + '@' + screenName);
 }
 
-//Post Request 
 function tweetIt(txt) {
 	var tweet = {
 		status: txt
@@ -28,6 +30,21 @@ function tweetIt(txt) {
 		} else {
 			console.log("It Worked!");
 		}
+	}
+}
+
+function tweetEvent(event) {
+	var fs = require('fs');
+	var json = JSON.stringify(event,null,2);
+	fs.writeFile("tweet.json", json);
+
+	var replyto = event.in_reply_to_screen_name;
+	var text = event.text;
+	var from = event.user.screen_name;
+
+	if(replyto === 'nikhil07parkash') {
+		var newtweet = '@' + from + ' thank you for tweeting me!';
+		tweetIt(newtweet);
 	}
 }
 

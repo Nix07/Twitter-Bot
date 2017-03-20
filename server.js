@@ -8,7 +8,7 @@ var T = new Twit(config);
 var stream = T.stream('user'); //Using User Stream
 //Anytime Someone Follows me
 stream.on('follow', followed);
-
+//Anytime Someone Tweets me
 stream.on('tweet', tweetEvent);
 
 function followed(event) {
@@ -43,7 +43,7 @@ function tweetEvent(event) {
 	var from = event.user.screen_name;
 
 	if(replyto === 'nikhil07parkash') {
-		var newtweet = '@' + from + ' thank you for tweeting me!';
+		var newtweet = 'Thank you for tweeting me! ' + '@' + from;
 		tweetIt(newtweet);
 	}
 }
